@@ -31,6 +31,7 @@ CREATE TABLE Planta (
     Variedade VARCHAR(100),
     Data_Plantio DATE,
     Estagio_Crescimento VARCHAR(100),
+    Imagem LONGBLOB,
     ID_Lote INT,
     ID_Estufa INT,
     FOREIGN KEY (ID_Lote) REFERENCES Lote(ID_Lote),
@@ -67,14 +68,26 @@ CREATE TABLE Funcionario (
     FOREIGN KEY (ID_Estufa) REFERENCES Estufa(ID_Estufa)
 );
 
--- Tabela Insumos
+
+CREATE TABLE Pedido_Insumo (
+    ID_Pedido INT AUTO_INCREMENT PRIMARY KEY,
+    Data_Pedido DATE,
+    Quantidade DECIMAL(10,2),
+    ID_Fornecedor INT,     -- Referência ao fornecedor do insumo
+    ID_Funcionario INT,    -- Referência ao funcionário que fez o pedido
+    FOREIGN KEY (ID_Fornecedor) REFERENCES Fornecedor(ID_Fornecedor),
+    FOREIGN KEY (ID_Funcionario) REFERENCES Funcionario(ID_Funcionario)
+);
+
 CREATE TABLE Insumos (
     ID_Insumo INT AUTO_INCREMENT PRIMARY KEY,
     Quantidade DECIMAL(10,2),
     Tipo VARCHAR(100),
     Data_Aplicacao DATE,
-    ID_Fornecedor INT,
-    FOREIGN KEY (ID_Fornecedor) REFERENCES Fornecedor(ID_Fornecedor)
+    ID_Funcionario INT,   -- Referência ao funcionário que fez a aplicação
+    ID_Pedido INT,        -- Referência ao pedido relacionado
+    FOREIGN KEY (ID_Funcionario) REFERENCES Funcionario(ID_Funcionario),
+    FOREIGN KEY (ID_Pedido) REFERENCES Pedido_Insumo(ID_Pedido)  -- Relaciona com Pedido_Insumo
 );
 
 -- Tabela Comprador
@@ -321,3 +334,7 @@ BEGIN
 END //
 
 DELIMITER ;
+
+
+
+
