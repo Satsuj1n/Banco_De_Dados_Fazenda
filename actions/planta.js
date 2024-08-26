@@ -1,18 +1,25 @@
 async function criarPlanta() {
-  const planta = {
-    variedade: document.getElementById("variedade").value,
-    data_plantio: document.getElementById("dataPlantio").value,
-    estagio_crescimento: document.getElementById("estagioCrescimento").value,
-    id_lote: document.getElementById("idLotePlanta").value,
-    id_estufa: document.getElementById("idEstufaPlanta").value,
-  };
+  const formData = new FormData();
+  formData.append("variedade", document.getElementById("variedade").value);
+  formData.append("data_plantio", document.getElementById("dataPlantio").value);
+  formData.append(
+    "estagio_crescimento",
+    document.getElementById("estagioCrescimento").value
+  );
+  formData.append("id_lote", document.getElementById("idLotePlanta").value);
+  formData.append("id_estufa", document.getElementById("idEstufaPlanta").value);
+
+  // Adiciona a imagem ao FormData se um arquivo foi selecionado
+  const imagem = document.getElementById("imagem").files[0];
+  if (imagem) {
+    formData.append("imagem", imagem);
+  }
+
   const response = await fetch("http://localhost:3000/planta", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(planta),
+    body: formData,
   });
+
   alert(await response.text());
 }
 
@@ -31,9 +38,16 @@ async function verPlantas() {
             <p><strong>ID:</strong> ${planta.ID_Planta}</p>
             <p><strong>Variedade:</strong> ${planta.Variedade}</p>
             <p><strong>Data de Plantio:</strong> ${planta.Data_Plantio}</p>
-            <p><strong>Estágio de Crescimento:</strong> ${planta.Estagio_Crescimento}</p>
+            <p><strong>Estágio de Crescimento:</strong> ${
+              planta.Estagio_Crescimento
+            }</p>
             <p><strong>ID Lote:</strong> ${planta.ID_Lote}</p>
             <p><strong>ID Estufa:</strong> ${planta.ID_Estufa}</p>
+            ${
+              planta.Imagem
+                ? `<img src="data:image/png;base64,${planta.Imagem}" style="max-width: 128px; max-height: 128px;" class="w-full h-auto mt-2" alt="Imagem da Planta"/>`
+                : ""
+            }
           </div>
           `
       )
@@ -83,22 +97,38 @@ async function removerPlanta() {
 // Função para atualizar as informações da Planta
 async function atualizarPlanta() {
   const idPlanta = document.getElementById("idPlanta").value;
-  const planta = {
-    variedade: document.getElementById("variedadeAtualizar").value,
-    data_plantio: document.getElementById("dataPlantioAtualizar").value,
-    estagio_crescimento: document.getElementById("estagioCrescimentoAtualizar")
-      .value,
-    id_lote: document.getElementById("idLotePlantaAtualizar").value,
-    id_estufa: document.getElementById("idEstufaPlantaAtualizar").value,
-  };
+  const formData = new FormData();
+  formData.append(
+    "variedade",
+    document.getElementById("variedadeAtualizar").value
+  );
+  formData.append(
+    "data_plantio",
+    document.getElementById("dataPlantioAtualizar").value
+  );
+  formData.append(
+    "estagio_crescimento",
+    document.getElementById("estagioCrescimentoAtualizar").value
+  );
+  formData.append(
+    "id_lote",
+    document.getElementById("idLotePlantaAtualizar").value
+  );
+  formData.append(
+    "id_estufa",
+    document.getElementById("idEstufaPlantaAtualizar").value
+  );
+
+  // Anexa a imagem ao FormData se ela existir
+  const imagem = document.getElementById("imagemAtualizar").files[0];
+  if (imagem) {
+    formData.append("imagem", imagem);
+  }
 
   try {
     const response = await fetch(`http://localhost:3000/planta/${idPlanta}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(planta),
+      body: formData,
     });
 
     if (!response.ok) {
@@ -107,10 +137,10 @@ async function atualizarPlanta() {
     }
 
     const resultado = await response.json();
-    const mensagem = resultado[0]?.Mensagem || "Erro ao atualizar a planta.";
+    const mensagem = resultado[0]?.Mensagem || "Planta atualizada com sucesso!";
     alert(mensagem);
   } catch (error) {
-    alert(error.message);
+    alert("Erro ao atualizar a planta: " + error.message);
   }
 }
 

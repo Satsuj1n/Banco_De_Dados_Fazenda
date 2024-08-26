@@ -80,16 +80,23 @@ app.delete("/lote/:id", (req, res) => {
 });
 
 // CRUD para a tabela Planta
-app.post("/planta", (req, res) => {
+const multer = require("multer");
+const upload = multer();
+
+app.post("/planta", upload.single("imagem"), (req, res) => {
   const { variedade, data_plantio, estagio_crescimento, id_lote, id_estufa } =
     req.body;
+  const imagem = req.file ? req.file.buffer : null; // Obtém a imagem, se houver
   const sql =
-    "INSERT INTO Planta (Variedade, Data_Plantio, Estagio_Crescimento, ID_Lote, ID_Estufa) VALUES (?, ?, ?, ?, ?)";
+    "INSERT INTO Planta (Variedade, Data_Plantio, Estagio_Crescimento, ID_Lote, ID_Estufa, Imagem) VALUES (?, ?, ?, ?, ?, ?)";
+
   db.query(
     sql,
-    [variedade, data_plantio, estagio_crescimento, id_lote, id_estufa],
+    [variedade, data_plantio, estagio_crescimento, id_lote, id_estufa, imagem],
     (err, result) => {
-      if (err) throw err;
+      if (err) {
+        return res.status(500).send("Erro ao inserir planta: " + err.message);
+      }
       res.send("Planta inserida com sucesso!");
     }
   );
@@ -99,7 +106,12 @@ app.get("/planta", (req, res) => {
   const sql = "SELECT * FROM Planta";
   db.query(sql, (err, results) => {
     if (err) throw err;
-    res.json(results);
+    // Codifica a imagem em base64 antes de enviar ao cliente
+    const plantas = results.map((planta) => ({
+      ...planta,
+      Imagem: planta.Imagem ? planta.Imagem.toString("base64") : null,
+    }));
+    res.json(plantas);
   });
 });
 
@@ -205,21 +217,38 @@ app.put("/lote/:id", (req, res) => {
 });
 
 // Rota para Atualizar a Planta
-app.put("/planta/:id", (req, res) => {
+app.put("/planta/:id", upload.single("imagem"), (req, res) => {
   const { id } = req.params;
   const { variedade, data_plantio, estagio_crescimento, id_lote, id_estufa } =
     req.body;
+  const imagem = req.file ? req.file.buffer : null;
 
-  db.query(
-    "CALL sp_AtualizarPlanta(?, ?, ?, ?, ?, ?)",
-    [id, variedade, data_plantio, estagio_crescimento, id_lote, id_estufa],
-    (err, results) => {
-      if (err) {
-        return res.status(500).send(err.sqlMessage);
-      }
-      res.json(results[0]); // Retorna a mensagem de confirmação da Procedure
+  let sql =
+    "UPDATE Planta SET Variedade = ?, Data_Plantio = ?, Estagio_Crescimento = ?, ID_Lote = ?, ID_Estufa = ?";
+  const params = [
+    variedade,
+    data_plantio,
+    estagio_crescimento,
+    id_lote,
+    id_estufa,
+  ];
+
+  if (imagem) {
+    sql += ", Imagem = ?";
+    params.push(imagem);
+  }
+
+  sql += " WHERE ID_Planta = ?";
+  params.push(id);
+
+  db.query(sql, params, (err, result) => {
+    if (err) {
+      return res
+        .status(500)
+        .json({ error: "Erro ao atualizar planta: " + err.message });
     }
-  );
+    res.json({ message: "Planta atualizada com sucesso!" });
+  });
 });
 
 // Rota para Atualizar a Colheita

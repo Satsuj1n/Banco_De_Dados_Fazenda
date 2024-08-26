@@ -234,6 +234,13 @@
             placeholder="ID da Estufa: Ex: 1, 2, 3"
             class="w-full p-2 border border-gray-300 rounded"
           />
+          <!-- Campo para upload de imagem -->
+          <input
+            type="file"
+            id="imagem"
+            accept="image/*"
+            class="w-full p-2 border border-gray-300 rounded"
+          />
           <button
             type="button"
             onclick="criarPlanta()"
@@ -242,6 +249,7 @@
             Criar Planta
           </button>
         </form>
+
         <button
           type="button"
           onclick="verPlantas()"
@@ -258,6 +266,7 @@
         >
           Mostrar Formulário de Atualização
         </button>
+
         <form id="atualizarPlantaForm" class="space-y-4" style="display: none">
           <input
             type="number"
@@ -293,6 +302,13 @@
             type="number"
             id="idEstufaPlantaAtualizar"
             placeholder="Novo ID da Estufa: Ex: 1, 2, 3"
+            class="w-full p-2 border border-gray-300 rounded"
+          />
+          <!-- Campo para upload de imagem ao atualizar planta -->
+          <input
+            type="file"
+            id="imagemAtualizar"
+            accept="image/*"
             class="w-full p-2 border border-gray-300 rounded"
           />
           <button
