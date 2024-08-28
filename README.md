@@ -1,36 +1,44 @@
-Projeto Banco de Dados Fazenda
+# Projeto Banco de Dados Fazenda
+
 Este projeto consiste na criação de um banco de dados para a gestão de uma fazenda de cultivo, com suporte a operações como gerenciamento de lotes, estufas, fornecedores, funcionários, equipamentos, pedidos de insumos, colheitas, vendas, entre outros.
 
-Índice
-Introdução
-Requisitos
-Instalação
-Configuração
-Uso
-Scripts SQL
-Criação do Banco de Dados
-População do Banco de Dados
-Estrutura do Projeto
-API e Endpoints
-Contribuição
-Licença
-Introdução
+## Índice
+
+- [Introdução](#introdução)
+- [Requisitos](#requisitos)
+- [Instalação](#instalação)
+- [Configuração](#configuração)
+- [Uso](#uso)
+- [Scripts SQL](#scripts-sql)
+  - [Criação do Banco de Dados](#criação-do-banco-de-dados)
+  - [População do Banco de Dados](#população-do-banco-de-dados)
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [API e Endpoints](#api-e-endpoints)
+- [Contribuição](#contribuição)
+- [Licença](#licença)
+
+## Introdução
+
 O "Banco de Dados Fazenda" é um sistema projetado para gerenciar diversas operações relacionadas ao cultivo em uma fazenda, como o acompanhamento de plantas, controle de estufas, gerenciamento de funcionários, e processamento de vendas. O sistema é composto por um banco de dados relacional estruturado em MySQL e um frontend básico que pode ser utilizado para visualizar e interagir com os dados.
 
-Requisitos
-Node.js e npm: Para o backend (Node.js) e gerenciamento de pacotes.
-MySQL: Para o gerenciamento do banco de dados.
-Git: Para controle de versão (opcional).
-Instalação
-1. Clone o repositório
-bash
-Copiar código
+## Requisitos
+
+- **Node.js** e **npm**: Para o backend (Node.js) e gerenciamento de pacotes.
+- **MySQL**: Para o gerenciamento do banco de dados.
+- **Git**: Para controle de versão (opcional).
+
+## Instalação
+
+### 1. Clone o repositório
+
+```bash
 git clone https://github.com/usuario/Banco_De_Dados_Fazenda.git
 cd Banco_De_Dados_Fazenda
+
 2. Instale as dependências
-bash
-Copiar código
+
 npm install
+
 3. Configure o banco de dados
 Antes de executar o projeto, certifique-se de que o MySQL está instalado e configurado na sua máquina.
 
@@ -38,10 +46,10 @@ Configuração
 Configuração do MySQL
 Crie um banco de dados MySQL com o nome fazenda.
 Execute os scripts SQL localizados no diretório scriptsSQL para criar e popular as tabelas do banco de dados.
-sql
-Copiar código
+
 source scriptsSQL/script.sql;
 source scriptsSQL/script_para_povoar_bd.sql;
+
 Configuração do Servidor
 Certifique-se de configurar as variáveis de ambiente necessárias no arquivo server.js, como as credenciais de acesso ao banco de dados MySQL.
 
@@ -49,9 +57,8 @@ Uso
 Executando o Servidor
 Após configurar o banco de dados, você pode iniciar o servidor Node.js com o seguinte comando:
 
-bash
-Copiar código
 node server.js
+
 Isso iniciará o servidor, e o frontend estará disponível para visualização e interação no seu navegador.
 
 Scripts SQL
@@ -96,3 +103,4 @@ Push a sua branch (git push origin feature/nova-feature).
 Abra um Pull Request.
 Licença
 Este projeto está licenciado sob os termos da licença MIT.
+```
