@@ -70,7 +70,7 @@ Certifique-se de configurar as variáveis de ambiente necessárias no arquivo `s
 Após configurar o banco de dados, você pode iniciar o servidor Node.js com o seguinte comando:
 
 ```bash
-node server.js
+npm start
 ```
 
 Isso iniciará o servidor, e o frontend estará disponível para visualização e interação no seu navegador.
