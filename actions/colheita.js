@@ -12,7 +12,8 @@ async function criarColheita() {
     },
     body: JSON.stringify(colheita),
   });
-  alert(await response.text());
+  const mensagem = await response.text()
+  showModal("Sucesso", mensagem);
 }
 
 async function verColheitas() {
@@ -78,7 +79,8 @@ async function removerColheita() {
   const response = await fetch(`http://localhost:3000/colheita/${id}`, {
     method: "DELETE",
   });
-  alert(await response.text());
+  const mensagem = await response.text()
+  showModal("Sucesso", mensagem);
   listarColheitas();
 }
 
@@ -111,10 +113,10 @@ async function atualizarColheita() {
     }
 
     const resultado = await response.json();
-    const mensagem = resultado[0]?.Mensagem || "Erro ao atualizar a colheita.";
-    alert(mensagem);
+    
+    showModal("Sucesso",`A colheita com o ID:${idColheita} foi atualizada com sucesso!`);
   } catch (error) {
-    alert(error.message);
+    showModal("Erro",`Ocorreu um erro ao tentar atualizar a colheita: ${error.message}`);
   }
 }
 

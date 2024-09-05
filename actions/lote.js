@@ -10,7 +10,8 @@ async function criarLote() {
     },
     body: JSON.stringify(lote),
   });
-  alert(await response.text());
+  const mensagem = await response.text()
+  showModal("Sucesso", mensagem);
 }
 
 async function verLotes() {
@@ -72,7 +73,8 @@ async function removerLote() {
   const response = await fetch(`http://localhost:3000/lote/${id}`, {
     method: "DELETE",
   });
-  alert(await response.text());
+  const mensagem = await response.text()
+  showModal("Sucesso", mensagem);
   listarLotes();
 }
 
@@ -99,10 +101,10 @@ async function atualizarLote() {
     }
 
     const resultado = await response.json();
-    const mensagem = resultado[0]?.Mensagem || "Erro ao atualizar o lote.";
-    alert(mensagem);
+
+    showModal("Sucesso",`O lote com o ID:${idLote} foi atualizado com sucesso!`);
   } catch (error) {
-    alert(error.message);
+    showModal("Erro",`Ocorreu um erro ao tentar atualizar o lote: ${error.message}`);
   }
 }
 

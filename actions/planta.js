@@ -20,7 +20,8 @@ async function criarPlanta() {
     body: formData,
   });
 
-  alert(await response.text());
+  const mensagem = await response.text()
+  showModal("Sucesso", mensagem);
 }
 
 async function verPlantas() {
@@ -90,7 +91,8 @@ async function removerPlanta() {
   const response = await fetch(`http://localhost:3000/planta/${id}`, {
     method: "DELETE",
   });
-  alert(await response.text());
+  const mensagem = await response.text()
+  showModal("Sucesso", mensagem);
   listarPlantas();
 }
 
@@ -137,10 +139,10 @@ async function atualizarPlanta() {
     }
 
     const resultado = await response.json();
-    const mensagem = resultado[0]?.Mensagem || "Planta atualizada com sucesso!";
-    alert(mensagem);
+    
+    showModal("Sucesso",`A planta com o ID:${idPlanta} foi atualizada com sucesso!`);
   } catch (error) {
-    alert("Erro ao atualizar a planta: " + error.message);
+    showModal("Erro",`Ocorreu um erro ao tentar atualizar a planta: ${error.message}`);
   }
 }
 

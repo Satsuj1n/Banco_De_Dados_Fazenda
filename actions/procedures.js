@@ -46,6 +46,6 @@ async function gerarRelatorioProducao() {
     }
   } catch (error) {
     console.error("Erro:", error);
-    alert(error.message);
+    showModal("Erro", error.message);
   }
 }
