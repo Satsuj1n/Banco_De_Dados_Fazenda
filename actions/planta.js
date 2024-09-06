@@ -88,12 +88,21 @@ async function listarPlantas() {
 
 async function removerPlanta() {
   const id = document.getElementById("plantaSelect").value;
-  const response = await fetch(`http://localhost:3000/planta/${id}`, {
-    method: "DELETE",
-  });
-  const mensagem = await response.text()
-  showModal("Sucesso", mensagem);
-  listarPlantas();
+  try {
+    const response = await fetch(`http://localhost:3000/planta/${id}`, {
+      method: "DELETE",
+    });
+
+    const mensagem = await response.text()
+    if (response.ok) {
+      showModal("Sucesso", mensagem);
+      listarPlantas();
+    } else {
+      showModal("Erro",mensagem)
+    }
+  } catch (error){
+    showModal("Erro", `Erro na requisição: ${error.message}`)
+  }
 }
 
 // Função para atualizar as informações da Planta

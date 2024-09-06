@@ -76,12 +76,21 @@ async function listarColheitas() {
 
 async function removerColheita() {
   const id = document.getElementById("colheitaSelect").value;
-  const response = await fetch(`http://localhost:3000/colheita/${id}`, {
-    method: "DELETE",
-  });
-  const mensagem = await response.text()
-  showModal("Sucesso", mensagem);
-  listarColheitas();
+  try {
+    const response = await fetch(`http://localhost:3000/colheita/${id}`, {
+      method: "DELETE",
+    });
+
+    const mensagem = await response.text()
+    if (response.ok) {
+      showModal("Sucesso", mensagem);
+      listarColheitas();
+    } else {
+      showModal("Erro",mensagem)
+    }
+  } catch (error){
+    showModal("Erro", `Erro na requisição: ${error.message}`)
+  }
 }
 
 // Função para atualizar as informações da Colheita

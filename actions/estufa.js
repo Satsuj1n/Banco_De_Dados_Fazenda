@@ -72,12 +72,21 @@ async function listarEstufas() {
 
 async function removerEstufa() {
   const id = document.getElementById("estufaSelect").value;
-  const response = await fetch(`http://localhost:3000/estufa/${id}`, {
-    method: "DELETE",
-  });
-  const mensagem = await response.text()
-  showModal("Sucesso", mensagem);
-  listarEstufas();
+  try {
+    const response = await fetch(`http://localhost:3000/estufa/${id}`, {
+      method: "DELETE",
+    });
+
+    const mensagem = await response.text()
+    if (response.ok) {
+      showModal("Sucesso", mensagem);
+      listarEstufas();
+    } else {
+      showModal("Erro",mensagem)
+    }
+  } catch (error){
+    showModal("Erro", `Erro na requisição: ${error.message}`)
+  }
 }
 
 // Função para atualizar as informações da Estufa

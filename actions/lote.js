@@ -70,12 +70,21 @@ async function listarLotes() {
 
 async function removerLote() {
   const id = document.getElementById("loteSelect").value;
-  const response = await fetch(`http://localhost:3000/lote/${id}`, {
-    method: "DELETE",
-  });
-  const mensagem = await response.text()
-  showModal("Sucesso", mensagem);
-  listarLotes();
+  try {
+    const response = await fetch(`http://localhost:3000/lote/${id}`, {
+      method: "DELETE",
+    });
+
+    const mensagem = await response.text()
+    if (response.ok) {
+      showModal("Sucesso", mensagem);
+      listarLotes();
+    } else {
+      showModal("Erro",mensagem)
+    }
+  } catch (error){
+    showModal("Erro", `Erro na requisição: ${error.message}`)
+  }
 }
 
 // Função para atualizar as informações do Lote
