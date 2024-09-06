@@ -34,8 +34,8 @@ CREATE TABLE Planta (
     Imagem LONGBLOB,
     ID_Lote INT,
     ID_Estufa INT,
-    FOREIGN KEY (ID_Lote) REFERENCES Lote(ID_Lote),
-    FOREIGN KEY (ID_Estufa) REFERENCES Estufa(ID_Estufa)
+    FOREIGN KEY (ID_Lote) REFERENCES Lote(ID_Lote) ON DELETE SET NULL,
+    FOREIGN KEY (ID_Estufa) REFERENCES Estufa(ID_Estufa) 
 );
 
 -- Tabela Colheita
@@ -45,7 +45,7 @@ CREATE TABLE Colheita (
     Quantidade_Colhida DECIMAL(10,2),
     Qualidade VARCHAR(100),
     ID_Planta INT,
-    FOREIGN KEY (ID_Planta) REFERENCES Planta(ID_Planta)
+    FOREIGN KEY (ID_Planta) REFERENCES Planta(ID_Planta) ON DELETE CASCADE
 );
 
 -- Tabela Equipamento
@@ -55,7 +55,7 @@ CREATE TABLE Equipamento (
     Estado_Conservacao VARCHAR(100),
     Data_Ultima_Manutencao DATE,
     ID_Estufa INT,
-    FOREIGN KEY (ID_Estufa) REFERENCES Estufa(ID_Estufa)
+    FOREIGN KEY (ID_Estufa) REFERENCES Estufa(ID_Estufa) ON DELETE CASCADE
 );
 
 -- Tabela Funcionario
@@ -65,7 +65,7 @@ CREATE TABLE Funcionario (
     Cargo VARCHAR(100),
     Horario_Trabalho VARCHAR(100),
     ID_Estufa INT,
-    FOREIGN KEY (ID_Estufa) REFERENCES Estufa(ID_Estufa)
+    FOREIGN KEY (ID_Estufa) REFERENCES Estufa(ID_Estufa) ON DELETE SET NULL
 );
 
 
@@ -73,8 +73,8 @@ CREATE TABLE Pedido_Insumo (
     ID_Pedido INT AUTO_INCREMENT PRIMARY KEY,
     Data_Pedido DATE,
     Quantidade DECIMAL(10,2),
-    ID_Fornecedor INT,     -- Referência ao fornecedor do insumo
-    ID_Funcionario INT,    -- Referência ao funcionário que fez o pedido
+    ID_Fornecedor INT,     
+    ID_Funcionario INT,    
     FOREIGN KEY (ID_Fornecedor) REFERENCES Fornecedor(ID_Fornecedor),
     FOREIGN KEY (ID_Funcionario) REFERENCES Funcionario(ID_Funcionario)
 );
@@ -84,10 +84,10 @@ CREATE TABLE Insumos (
     Quantidade DECIMAL(10,2),
     Tipo VARCHAR(100),
     Data_Aplicacao DATE,
-    ID_Funcionario INT,   -- Referência ao funcionário que fez a aplicação
-    ID_Pedido INT,        -- Referência ao pedido relacionado
+    ID_Funcionario INT,   
+    ID_Pedido INT,        
     FOREIGN KEY (ID_Funcionario) REFERENCES Funcionario(ID_Funcionario),
-    FOREIGN KEY (ID_Pedido) REFERENCES Pedido_Insumo(ID_Pedido)  -- Relaciona com Pedido_Insumo
+    FOREIGN KEY (ID_Pedido) REFERENCES Pedido_Insumo(ID_Pedido)  
 );
 
 -- Tabela Comprador
@@ -96,7 +96,7 @@ CREATE TABLE Comprador (
     Nome VARCHAR(100),
     Contato VARCHAR(100),
     ID_Lote INT,
-    FOREIGN KEY (ID_Lote) REFERENCES Lote(ID_Lote)
+    FOREIGN KEY (ID_Lote) REFERENCES Lote(ID_Lote) ON DELETE SET NULL
 );
 
 -- Tabela Venda
@@ -107,7 +107,7 @@ CREATE TABLE Venda (
     Preco DECIMAL(10,2),
     ID_Lote INT,
     ID_Comprador INT,
-    FOREIGN KEY (ID_Lote) REFERENCES Lote(ID_Lote),
+    FOREIGN KEY (ID_Lote) REFERENCES Lote(ID_Lote) ON DELETE SET NULL,
     FOREIGN KEY (ID_Comprador) REFERENCES Comprador(ID_Comprador)
 );
 
