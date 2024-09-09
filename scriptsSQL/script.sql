@@ -45,7 +45,7 @@ CREATE TABLE Colheita (
     Quantidade_Colhida DECIMAL(10,2),
     Qualidade VARCHAR(100),
     ID_Planta INT,
-    FOREIGN KEY (ID_Planta) REFERENCES Planta(ID_Planta) ON DELETE CASCADE
+    FOREIGN KEY (ID_Planta) REFERENCES Planta(ID_Planta) ON DELETE SET NULL
 );
 
 -- Tabela Equipamento

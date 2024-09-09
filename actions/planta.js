@@ -2,10 +2,7 @@ async function criarPlanta() {
   const formData = new FormData();
   formData.append("variedade", document.getElementById("variedade").value);
   formData.append("data_plantio", document.getElementById("dataPlantio").value);
-  formData.append(
-    "estagio_crescimento",
-    document.getElementById("estagioCrescimento").value
-  );
+  formData.append("estagio_crescimento", document.getElementById("estagioCrescimento").value);
   formData.append("id_lote", document.getElementById("idLotePlanta").value);
   formData.append("id_estufa", document.getElementById("idEstufaPlanta").value);
 
@@ -21,7 +18,14 @@ async function criarPlanta() {
   });
 
   const mensagem = await response.text()
-  showModal("Sucesso", mensagem);
+  showModal("Alerta!", mensagem);
+
+  document.getElementById("variedade").value = "";
+  document.getElementById("dataPlantio").value = "";
+  document.getElementById("estagioCrescimento").value = "";
+  document.getElementById("idLotePlanta").value = "";
+  document.getElementById("idEstufaPlanta").value = "";
+  document.getElementById("imagem").value = "";
 }
 
 async function verPlantas() {
@@ -153,6 +157,12 @@ async function atualizarPlanta() {
   } catch (error) {
     showModal("Erro",`Ocorreu um erro ao tentar atualizar a planta: ${error.message}`);
   }
+  document.getElementById("variedadeAtualizar").value = "";
+  document.getElementById("dataPlantioAtualizar").value = "";
+  document.getElementById("estagioCrescimentoAtualizar").value = "";
+  document.getElementById("idLotePlantaAtualizar").value = "";
+  document.getElementById("idEstufaPlantaAtualizar").value = "";
+  document.getElementById("imagemAtualizar").value = "";
 }
 
 // Função para mostrar ou ocultar o formulário de atualização

@@ -23,6 +23,11 @@ db.connect((err) => {
 // CRUD para a tabela Estufa
 app.post("/estufa", (req, res) => {
   const { localizacao, temperatura, umidade, tamanho } = req.body;
+
+  if (!localizacao || !temperatura || !umidade || !tamanho){
+    return res.status(400).json("Todos os campos devem ser preenchidos.")
+  }
+
   const sql =
     "INSERT INTO Estufa (Localizacao, Temperatura, Umidade, Tamanho) VALUES (?, ?, ?, ?)";
   db.query(sql, [localizacao, temperatura, umidade, tamanho], (err, result) => {
@@ -44,7 +49,7 @@ app.delete("/estufa/:id", (req, res) => {
   const sql = "DELETE FROM Estufa WHERE ID_Estufa = ?";
   db.query(sql, [id], (err, result) => {
     if (err) {
-      return res.status(500).send("Erro ao excluir estufa: " + err.message);
+      return res.status(500).send("Erro ao excluir estufa: " + "Antes de excluir a estufa, verifique se todas as plantas relacionadas a ela foram removidas.");
     }
     res.send("Estufa excluída com sucesso!");
   });
@@ -53,6 +58,11 @@ app.delete("/estufa/:id", (req, res) => {
 // CRUD para a tabela Lote
 app.post("/lote", (req, res) => {
   const { data_criacao, numero_plantas } = req.body;
+
+  if (!data_criacao || !numero_plantas){
+    return res.status(400).json("Todos os campos devem ser preenchidos.")
+  }
+
   const sql = "INSERT INTO Lote (Data_Criacao, Numero_Plantas) VALUES (?, ?)";
   db.query(sql, [data_criacao, numero_plantas], (err, result) => {
     if (err) throw err;
@@ -87,6 +97,11 @@ app.post("/planta", upload.single("imagem"), (req, res) => {
   const { variedade, data_plantio, estagio_crescimento, id_lote, id_estufa } =
     req.body;
   const imagem = req.file ? req.file.buffer : null; // Obtém a imagem, se houver
+
+  if (!variedade || !data_plantio || !estagio_crescimento || !id_lote || !id_estufa){
+    return res.status(400).json("Todos os campos devem ser preenchidos, exceto pela imagem que é optativa.")
+  }
+
   const sql =
     "INSERT INTO Planta (Variedade, Data_Plantio, Estagio_Crescimento, ID_Lote, ID_Estufa, Imagem) VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -95,7 +110,7 @@ app.post("/planta", upload.single("imagem"), (req, res) => {
     [variedade, data_plantio, estagio_crescimento, id_lote, id_estufa, imagem],
     (err, result) => {
       if (err) {
-        return res.status(500).send("Erro ao inserir planta: " + err.message);
+        return res.status(500).send("Erro ao inserir planta: " + "Verifique se o ID_Estufa ou o ID_Lote estão corretos.");
       }
       res.send("Planta inserida com sucesso!");
     }
@@ -129,16 +144,21 @@ app.delete("/planta/:id", (req, res) => {
 // CRUD para a tabela Colheita
 app.post("/colheita", (req, res) => {
   const { data_colheita, quantidade_colhida, qualidade, id_planta } = req.body;
+
+  if(!data_colheita || !quantidade_colhida || !qualidade || !id_planta){
+    return res.status(400).json("Todos os campos devem ser preenchidos.")
+  }
+
   const sql =
     "INSERT INTO Colheita (Data_Colheita, Quantidade_Colhida, Qualidade, ID_Planta) VALUES (?, ?, ?, ?)";
   db.query(
     sql,
-    [data_colheita, quantidade_colhida, qualidade, id_planta],
-    (err, result) => {
-      if (err) throw err;
+    [data_colheita, quantidade_colhida, qualidade, id_planta], (err, result) => {
+      if (err){
+        return res.status(500).send("Erro ao inserir colheita: " + "Verifique se o ID_Planta está correto.");
+      }
       res.send("Colheita inserida com sucesso!");
-    }
-  );
+    });
 });
 
 app.get("/colheita", (req, res) => {
@@ -187,6 +207,11 @@ app.put("/estufa/:id", (req, res) => {
   const { id } = req.params;
   const { localizacao, temperatura, umidade, tamanho } = req.body;
 
+  
+  if (!localizacao || !temperatura || !umidade || !tamanho){
+    return res.status(400).json("Todos os campos devem ser preenchidos.")
+  }
+
   db.query(
     "CALL sp_AtualizarEstufa(?, ?, ?, ?, ?)",
     [id, localizacao, temperatura, umidade, tamanho],
@@ -203,6 +228,10 @@ app.put("/estufa/:id", (req, res) => {
 app.put("/lote/:id", (req, res) => {
   const { id } = req.params;
   const { data_criacao, numero_plantas } = req.body;
+
+  if (!data_criacao || !numero_plantas){
+    return res.status(400).json("Todos os campos devem ser preenchidos.")
+  }
 
   db.query(
     "CALL sp_AtualizarLote(?, ?, ?)",
@@ -222,6 +251,10 @@ app.put("/planta/:id", upload.single("imagem"), (req, res) => {
   const { variedade, data_plantio, estagio_crescimento, id_lote, id_estufa } =
     req.body;
   const imagem = req.file ? req.file.buffer : null;
+
+  if (!variedade || !data_plantio || !estagio_crescimento || !id_lote || !id_estufa){
+    return res.status(400).json("Todos os campos devem ser preenchidos, exceto pela imagem que é optativa.")
+  }
 
   let sql =
     "UPDATE Planta SET Variedade = ?, Data_Plantio = ?, Estagio_Crescimento = ?, ID_Lote = ?, ID_Estufa = ?";
@@ -255,6 +288,10 @@ app.put("/planta/:id", upload.single("imagem"), (req, res) => {
 app.put("/colheita/:id", (req, res) => {
   const { id } = req.params;
   const { data_colheita, quantidade_colhida, qualidade, id_planta } = req.body;
+
+  if(!data_colheita || !quantidade_colhida || !qualidade || !id_planta){
+    return res.status(400).json("Preencha todos os campos.")
+  }
 
   db.query(
     "CALL sp_AtualizarColheita(?, ?, ?, ?, ?)",

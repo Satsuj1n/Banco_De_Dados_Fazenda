@@ -11,7 +11,10 @@ async function criarLote() {
     body: JSON.stringify(lote),
   });
   const mensagem = await response.text()
-  showModal("Sucesso", mensagem);
+  showModal("Alerta!", mensagem);
+
+  document.getElementById("dataCriacao").value = "";
+  document.getElementById("numeroPlantas").value = "";
 }
 
 async function verLotes() {
@@ -115,6 +118,8 @@ async function atualizarLote() {
   } catch (error) {
     showModal("Erro",`Ocorreu um erro ao tentar atualizar o lote: ${error.message}`);
   }
+  document.getElementById("dataCriacaoAtualizar").value = "";
+  document.getElementById("numeroPlantasAtualizar").value = "";
 }
 
 // Função para mostrar ou ocultar o formulário de atualização

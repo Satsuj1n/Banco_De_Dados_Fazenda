@@ -13,7 +13,12 @@ async function criarEstufa() {
     body: JSON.stringify(estufa),
   });
   const mensagem = await response.text()
-  showModal("Sucesso", mensagem);
+  showModal("Alerta!", mensagem);
+  
+  document.getElementById("localizacao").value = "";
+  document.getElementById("temperatura").value = "";
+  document.getElementById("umidade").value = "";
+  document.getElementById("tamanho").value = "";
 }
 
 async function verEstufas() {
@@ -119,6 +124,10 @@ async function atualizarEstufa() {
   } catch (error) {
     showModal("Erro",`Ocorreu um erro ao tentar atualizar a estufa: ${error.message}`);
   }
+  document.getElementById("localizacaoAtualizar").value = "";
+  document.getElementById("temperaturaAtualizar").value = "";
+  document.getElementById("umidadeAtualizar").value = "";
+  document.getElementById("tamanhoAtualizar").value = "";
 }
 
 function toggleFormularioAtualizarEstufa() {
