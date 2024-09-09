@@ -13,7 +13,12 @@ async function criarColheita() {
     body: JSON.stringify(colheita),
   });
   const mensagem = await response.text()
-  showModal("Sucesso", mensagem);
+  showModal("Alerta!", mensagem);
+
+  document.getElementById("dataColheita").value = "";
+  document.getElementById("quantidadeColhida").value = "";
+  document.getElementById("qualidade").value = "";
+  document.getElementById("idPlantaColheita").value = "";
 }
 
 async function verColheitas() {
@@ -98,8 +103,7 @@ async function atualizarColheita() {
   const idColheita = document.getElementById("idColheita").value;
   const colheita = {
     data_colheita: document.getElementById("dataColheitaAtualizar").value,
-    quantidade_colhida: document.getElementById("quantidadeColhidaAtualizar")
-      .value,
+    quantidade_colhida: document.getElementById("quantidadeColhidaAtualizar").value,
     qualidade: document.getElementById("qualidadeAtualizar").value,
     id_planta: document.getElementById("idPlantaColheitaAtualizar").value,
   };
@@ -127,6 +131,10 @@ async function atualizarColheita() {
   } catch (error) {
     showModal("Erro",`Ocorreu um erro ao tentar atualizar a colheita: ${error.message}`);
   }
+  document.getElementById("dataColheitaAtualizar").value = "";
+  document.getElementById("quantidadeColhidaAtualizar").value = "";
+  document.getElementById("qualidadeAtualizar").value = "";
+  document.getElementById("idPlantaColheitaAtualizar").value = "";
 }
 
 // Função para mostrar ou ocultar o formulário de atualização
